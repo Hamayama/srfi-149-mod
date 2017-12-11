@@ -48,13 +48,15 @@
    compile_add.scm の内容を、  
    Gauche のソースの src フォルダにある compile.scm の末尾に追加してください。  
    また、compile-1_add.scm の内容を、  
-   Gauche のソースの src フォルダにある compile-1.scm の末尾に追加してください。  
-   そして、Gauche のビルドを行ってください。  
+   Gauche のソースの src フォルダにある compile-1.scm の末尾に追加してください。
+
+4. Gauche のビルド  
+   Gauche のビルドを行ってください。  
    Windows の場合には、以下のページを参照して、  
    「5. Gauche のコンパイル」以後を実施ください。  
    https://gist.github.com/Hamayama/6666e5d2c8d5167d22f7
 
-4. srfi-149-mod.scm のコピー  
+5. srfi-149-mod.scm のコピー  
    srfi-149-mod.scm を Gauche でロード可能なフォルダにコピーしてください。  
    (例えば (gauche-site-library-directory) で表示されるフォルダ等)
 
@@ -62,10 +64,11 @@
 
 
 ## 使い方
+Gauche を起動して、以下を実行すると、  
+本モジュールの syntax-rules が使用可能になります。
 ```
 (use srfi-149-mod)
 ```
-により本モジュールの syntax-rules が使用可能になります。
 例として、足し算を行うマクロを定義してみます。
 ```
 (define-syntax add
@@ -90,7 +93,7 @@ macroexpand-all で展開してみます。
    通常は、本モジュールを使用する必要はありません。  
    マクロのテストや展開結果の比較のために利用することを想定しています。
 
-2. Gauche の将来のバージョンアップにより動作しなくなる可能性があります。
+2. Gauche の将来のバージョンアップにより、動作しなくなる可能性があります。
 
 3. REPL上で syntax-rules が組み込みのものか、本モジュールのものかを知りたい場合には、  
    REPL上で syntax-rules と入力してください。  
