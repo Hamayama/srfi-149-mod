@@ -15,9 +15,7 @@
           (free-identifier=? a1 b1))))
    (else
     ;; consider keywords
-    (and (not (symbol? a))
-         (not (symbol? b))
-         (keyword? a)
+    (and (keyword? a)
          (keyword? b)
          (eq? a b)))))
 
