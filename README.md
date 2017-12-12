@@ -45,9 +45,7 @@
    (Download Zip ボタン等で)ダウンロードして、適当なフォルダに展開してください。
 
 3. Gauche の改造  
-   compile_add.scm の内容を、  
-   Gauche のソースの src フォルダにある compile.scm の末尾に追加してください。  
-   また、compile-1_add.scm の内容を、  
+   compile-1_add.scm の内容を、  
    Gauche のソースの src フォルダにある compile-1.scm の末尾に追加してください。
 
 4. Gauche のビルド  
@@ -119,6 +117,7 @@ macroexpand-all で展開してみます。
 - 2017-12-12  v1.01 compile_add.scm のキーワード処理を修正
 - 2017-12-12  v1.02 compile_add.scm のキーワード処理を見直し
 - 2017-12-12  v1.03 compile_add.scm のキーワード処理を見直し
+- 2017-12-12  v1.04 compile_add.scm を削除(Gauche本体で対応されました)
 
 
 (2017-12-12)
