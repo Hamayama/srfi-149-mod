@@ -103,6 +103,12 @@ macroexpand-all で展開してみます。
    本モジュールに依存したプリコンパイルデータができてしまいます。  
    基本的に、プリコンパイル用には使用しないようにしてください。
 
+5. 現状、本モジュールの syntax-rules には、以下の不具合があるようです。
+   - pattern 内のリスト/ベクタの先頭に ellipsis がある場合に、エラーにならない
+   - ellipsis と literal の両方に 同じ identifier を指定した場合に、  
+     literal が優先にならない  
+     (R7RS では 4.3.2 で literal が優先とされている)
+
 
 ## 環境等
 - OS
@@ -111,13 +117,16 @@ macroexpand-all で展開してみます。
   - MSYS2/MinGW-w64 (64bit/32bit) (gcc version 7.1.0 (Rev2, Built by MSYS2 project))
 - 言語
   - Gauche v0.9.6_pre4
+- ライセンス
+  - オリジナルと同様とします
 
 ## 履歴
 - 2017-12-11  v1.00 (初版)
 - 2017-12-12  v1.01 compile_add.scm のキーワード処理を修正
 - 2017-12-12  v1.02 compile_add.scm のキーワード処理を見直し
 - 2017-12-12  v1.03 compile_add.scm のキーワード処理を見直し
-- 2017-12-12  v1.04 compile_add.scm を削除(Gauche本体で対応されました)
+- 2017-12-12  v1.04 compile_add.scm を削除(Gauche本体で対応されました)  
+  (compile-1_add.scm の方は今も必要です)
 
 
-(2017-12-12)
+(2017-12-16)

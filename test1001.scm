@@ -8,5 +8,5 @@
 
 (print "(add 1 2 3 4 5) = " (add 1 2 3 4 5))
 
-(print "macroexpand-all : "(macroexpand-all '(add 1 2 3 4 5)))
+(print "macroexpand-all : " (macroexpand-all '(add 1 2 3 4 5)))
 
