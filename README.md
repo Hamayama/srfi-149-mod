@@ -127,6 +127,9 @@ macroexpand-all で展開してみます。
 - 2017-12-12  v1.03 compile_add.scm のキーワード処理を見直し
 - 2017-12-12  v1.04 compile_add.scm を削除(Gauche本体で対応されました)  
   (compile-1_add.scm の方は今も必要です)
+- 2017-12-17  v1.05 参照実装の更新に追従  
+  ( underscore の判定の修正 および literal の判定の修正  
+  https://github.com/ashinn/chibi-scheme/blob/master/lib/init-7.scm )
 
 
-(2017-12-16)
+(2017-12-17)
