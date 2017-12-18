@@ -130,6 +130,7 @@ macroexpand-all で展開してみます。
 - 2017-12-17  v1.05 参照実装の更新に追従  
   ( underscore の判定の修正 および literal の判定の修正  
   https://github.com/ashinn/chibi-scheme/blob/master/lib/init-7.scm )
+- 2017-12-18  v1.06 with-module の処理見直し
 
 
-(2017-12-17)
+(2017-12-18)

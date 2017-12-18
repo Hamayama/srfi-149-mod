@@ -51,7 +51,7 @@
 
 ;(define (cons-source-149 kar kdr source) (cons kar kdr))
 (define (cons-source-149 kar kdr source)
-  (with-module gauche.internal (with-original-source (cons kar kdr) source)))
+  ((with-module gauche.internal with-original-source) (cons kar kdr) source))
 
 (define %number->string-149 number->string)
 
