@@ -105,9 +105,6 @@ macroexpand-all で展開してみます。
 
 5. 現状、本モジュールの syntax-rules には、以下の不具合があるようです。
    - pattern 内のリスト/ベクタの先頭に ellipsis がある場合に、エラーにならない
-   - ellipsis と literal の両方に 同じ identifier を指定した場合に、  
-     literal が優先にならない  
-     (R7RS では 4.3.2 で literal が優先とされている)
 
 
 ## 環境等
@@ -131,6 +128,9 @@ macroexpand-all で展開してみます。
   ( underscore の判定の修正 および literal の判定の修正  
   https://github.com/ashinn/chibi-scheme/blob/master/lib/init-7.scm )
 - 2017-12-18  v1.06 with-module の処理見直し
+- 2017-12-29  v1.07 ellipsis と literal の両方に 同じ identifier を指定した場合に、  
+  literal が優先になるように変更  
+  (R7RS では 4.3.2 で literal が優先とされている)
 
 
-(2017-12-18)
+(2017-12-29)
