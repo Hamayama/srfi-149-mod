@@ -10,18 +10,18 @@
 (test-module 'srfi-149-mod)
 
 ;; ----------------------------------------
-(test-section "sample case")
+(test-section "simple case")
 
 (define-syntax add
   (syntax-rules ()
     ((_ x1 ...)
      (+ x1 ...))))
 
-(test* "sample-case-1" 15 (add 1 2 3 4 5))
-(test* "sample-case-2" '(+ '1 '2 '3 '4 '5) (macroexpand-all '(add 1 2 3 4 5)))
+(test* "simple-case-1" 15 (add 1 2 3 4 5))
+(test* "simple-case-2" '(+ '1 '2 '3 '4 '5) (macroexpand-all '(add 1 2 3 4 5)))
 
 ;; ----------------------------------------
-(test-section "generate literals (bug in v1.04)")
+(test-section "generate literals (fixed in v1.05)")
 
 (define-syntax gen-lit-1
   (syntax-rules ()
@@ -36,15 +36,36 @@
 (test* "generate-literals-1" 6 (gen-lit-1 x2 1 2 3))
 
 ;; ----------------------------------------
-(test-section "ellipsis and literals (bug in v1.06)")
+(test-section "ellipsis and literals (fixed in v1.07)")
 
-;; literal has priority to ellipsis
+;; literal has priority to ellipsis (R7RS 4.3.2)
 (define-syntax elli-lit-1
   (syntax-rules ... (...)
     ((_ x)
      '(x ...))))
 
 (test* "ellipsis-literals-1" '(100 ...) (elli-lit-1 100))
+
+;; ----------------------------------------
+(test-section "bad ellipsis (fixed in v1.08)")
+
+(test* "bad-ellipsis-1"
+       (test-error)
+       (eval
+        '(define-syntax bad-elli-1
+           (syntax-rules ()
+             ((_ ... x)
+              '(... x))))
+        (interaction-environment)))
+
+(test* "bad-ellipsis-2"
+       (test-error)
+       (eval
+        '(define-syntax bad-elli-2
+           (syntax-rules ()
+             ((_ (... x))
+              '(... x))))
+        (interaction-environment)))
 
 (test-end)
 
