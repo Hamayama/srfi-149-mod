@@ -8,26 +8,29 @@
   (export syntax-rules))
 (select-module srfi-149-mod)
 
-(define (identifier?-149 x)
+(define identifier?-orig identifier?)
+(define (identifier? x)
   (or (symbol? x)
       (keyword? x)
-      (identifier? x)))
+      (identifier?-orig x)))
 
-(define (identifier->symbol-149 x)
+(define identifier->symbol-orig identifier->symbol)
+(define (identifier->symbol x)
   (cond
    ((symbol? x) x)
    ((keyword? x) x)
    ;((keyword? x) (string->symbol (string-append ":" (keyword->string x))))
    (else
-    (identifier->symbol x))))
+    (identifier->symbol-orig x))))
 
 ;; (from Sagittarius Scheme's comments)
 ;; Chibi allow 'ls' to be non pair as its extension.
 ;; syntax-rules depends on this behaviour so we need to allow it
-(define (any-149 pred ls)
+(define any-orig any)
+(define (any pred ls)
   (cond
    ((list? ls)
-    (any pred ls))
+    (any-orig pred ls))
    (else
     (let loop ((ls ls))
       (if (not (pair? ls))
@@ -39,7 +42,7 @@
 ;; Chibi's length* returns element count of car parts of inproper list
 ;; e.g) (length* '(1 2 3 . 4)) ;; => 3
 ;; And syntax-rules depends on this behaviour. So provide it.
-(define (length*-149 ls)
+(define (length* ls)
   (cond
    ((list? ls)
     (length ls))
@@ -49,17 +52,17 @@
         i
         (loop (+ i 1) (cdr ls)))))))
 
-;(define (cons-source-149 kar kdr source) (cons kar kdr))
-(define (cons-source-149 kar kdr source)
+;(define (cons-source kar kdr source) (cons kar kdr))
+(define (cons-source kar kdr source)
   ((with-module gauche.internal with-original-source) (cons kar kdr) source))
 
-(define %number->string-149 number->string)
+(define %number->string number->string)
 
-;(define (strip-syntactic-closures-149 x) x)
-(define strip-syntactic-closures-149 unwrap-syntax)
+;(define (strip-syntactic-closures x) x)
+(define strip-syntactic-closures unwrap-syntax)
 
 (define (syntax-rules-transformer expr rename compare)
-  (let ((ellipsis-specified? (identifier?-149 (cadr expr)))
+  (let ((ellipsis-specified? (identifier? (cadr expr)))
         (count 0)
         (_er-macro-transformer (rename 'er-macro-transformer))
         (_lambda (rename 'lambda))      (_let (rename 'let))
@@ -73,20 +76,20 @@
         (_quote (rename 'syntax-quote)) (_apply (rename 'apply))
         (_append (rename 'append))      (_map (rename 'map))
         (_vector? (rename 'vector?))    (_list? (rename 'list?))
-        (_len (rename'len))             (_length (rename 'length*-149))
+        (_len (rename'len))             (_length (rename 'length*))
         (_- (rename '-))   (_>= (rename '>=))   (_error (rename 'error))
         (_ls (rename 'ls)) (_res (rename 'res)) (_i (rename 'i))
         (_reverse (rename 'reverse))
         (_vector->list (rename 'vector->list))
         (_list->vector (rename 'list->vector))
-        (_cons3 (rename 'cons-source-149))
+        (_cons3 (rename 'cons-source))
         (_underscore (rename '_)))
     (define ellipsis (if ellipsis-specified? (cadr expr) (rename '...)))
     (define lits (if ellipsis-specified? (car (cddr expr)) (cadr expr)))
     (define forms (if ellipsis-specified? (cdr (cddr expr)) (cddr expr)))
     (define (next-symbol s)
       (set! count (+ count 1))
-      (rename (string->symbol (string-append s (%number->string-149 count)))))
+      (rename (string->symbol (string-append s (%number->string count)))))
     (define (expand-pattern pat tmpl)
       (let lp ((p (cdr pat))
                (x (list _cdr _expr))
@@ -98,7 +101,7 @@
           (list
            _let (list (list v x))
            (cond
-            ((identifier?-149 p)
+            ((identifier? p)
              (cond
               ((ellipsis-mark? p)
                (error "bad ellipsis" p))
@@ -114,11 +117,11 @@
              (cond
               ((not (null? (cdr (cdr p))))
                (cond
-                ((any-149 (lambda (x) (and (identifier?-149 x) (ellipsis-mark? x)))
-                          (cddr p))
+                ((any (lambda (x) (and (identifier? x) (ellipsis-mark? x)))
+                      (cddr p))
                  (error "multiple ellipses" p))
                 (else
-                 (let ((len (length*-149 (cdr (cdr p))))
+                 (let ((len (length* (cdr (cdr p))))
                        (_lp (next-symbol "lp.")))
                    `(,_let ((,_len (,_length ,v)))
                       (,_and (,_>= ,_len ,len)
@@ -139,7 +142,7 @@
                                               (,_cons3 (,_car ,_ls)
                                                        ,_res
                                                        ,_ls))))))))))
-              ((identifier?-149 (car p))
+              ((identifier? (car p))
                (list _and (list _list? v)
                      (list _let (list (list (car p) v))
                            (k (cons (cons (car p) (+ 1 dim)) vars)))))
@@ -151,7 +154,7 @@
                                       (next-symbol
                                        (string-append
                                         (symbol->string
-                                         (identifier->symbol-149 (car x)))
+                                         (identifier->symbol (car x)))
                                         "-ls")))
                                     new-vars))
                       (once
@@ -193,7 +196,7 @@
     (define ellipsis-mark?
       (if (if ellipsis-specified?
               (memq ellipsis lits)
-              (any-149 (lambda (x) (compare ellipsis x)) lits))
+              (any (lambda (x) (compare ellipsis x)) lits))
           (lambda (x) #f)
           (if ellipsis-specified?
               (lambda (x) (eq? ellipsis x))
@@ -211,7 +214,7 @@
           (cdr x)))
     (define (all-vars x dim)
       (let lp ((x x) (dim dim) (vars '()))
-        (cond ((identifier?-149 x)
+        (cond ((identifier? x)
                (if (or (memq x lits)
                        (compare x _underscore))
                    vars
@@ -223,7 +226,7 @@
     (define (free-vars x vars dim)
       (let lp ((x x) (free '()))
         (cond
-         ((identifier?-149 x)
+         ((identifier? x)
           (if (and (not (memq x free))
                    (cond ((assq x vars) => (lambda (cell) (>= (cdr cell) dim)))
                          (else #f)))
@@ -235,7 +238,7 @@
     (define (expand-template tmpl vars)
       (let lp ((t tmpl) (dim 0))
         (cond
-         ((identifier?-149 t)
+         ((identifier? t)
           (cond
            ((find (lambda (v) (eq? t (car v))) vars)
             => (lambda (cell)
@@ -258,13 +261,13 @@
               (cond
                ((null? ell-vars)
                 (error "too many ...'s"))
-               ((and (null? (cdr (cdr t))) (identifier?-149 (car t)))
+               ((and (null? (cdr (cdr t))) (identifier? (car t)))
                 ;; shortcut for (var ...)
                 (lp (car t) ell-dim))
                (else
                 (let* ((once (lp (car t) ell-dim))
                        (nest (if (and (null? (cdr ell-vars))
-                                      (identifier?-149 once)
+                                      (identifier? once)
                                       (eq? once (car vars)))
                                  once ;; shortcut
                                  (cons _map
@@ -295,7 +298,7 @@
               (list
                (list _cons
                      (list _error "no expansion for"
-                           (list (rename 'strip-syntactic-closures-149) _expr))
+                           (list (rename 'strip-syntactic-closures) _expr))
                      #f)))))))))
 
 (define-syntax syntax-rules
