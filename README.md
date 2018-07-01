@@ -86,7 +86,7 @@ macroexpand-all で展開してみます。
 ```
 
 
-## その他、注意事項等
+## その他 注意事項等
 1. Gauche には組み込みの syntax-rules が存在するため、  
    通常は、本モジュールを使用する必要はありません。  
    マクロのテストや展開結果の比較のために利用することを想定しています。
@@ -103,25 +103,14 @@ macroexpand-all で展開してみます。
    本モジュールに依存したプリコンパイルデータができてしまいます。  
    基本的に、プリコンパイル用には使用しないようにしてください。
 
-5. 現状、本モジュールの syntax-rules には、以下の不具合があるようです。
-   - ellipsis をエスケープした template 内で、pattern 変数が展開されない。  
-     例えば、以下の例では、展開結果が 1 になるはずだが、x になってしまう。
-     ```
-     (define-syntax elli-esc
-       (syntax-rules ()
-         ((_ x)
-          '(... x))))
-     (elli-esc 1)
-     ```
-
 
 ## 環境等
 - OS
   - Windows 8.1 (64bit)
 - 環境
-  - MSYS2/MinGW-w64 (64bit/32bit) (gcc version 7.1.0 (Rev2, Built by MSYS2 project))
+  - MSYS2/MinGW-w64 (64bit/32bit) (gcc version 7.2.0 (Rev1, Built by MSYS2 project))
 - 言語
-  - Gauche v0.9.6_pre4
+  - Gauche v0.9.6_pre7
 - ライセンス
   - オリジナルと同様とします
 
@@ -142,6 +131,7 @@ macroexpand-all で展開してみます。
 - 2017-12-29  v1.08 pattern 内のリスト/ベクタの先頭に ellipsis がある場合に、  
   エラーを出すように修正
 - 2018-1-8    v1.09 '-149' という手続き名をやめた
+- 2018-7-2    v1.10 ellipsis をエスケープした template 内で、pattern 変数が展開されない件を修正
 
 
-(2018-1-9)
+(2018-7-2)
