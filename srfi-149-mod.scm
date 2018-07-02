@@ -194,13 +194,10 @@
             ((null? p) (list _and (list _null? v) (k vars)))
             (else (list _and (list _equal? v p) (k vars))))))))
     (define ellipsis-mark?
-      (if (if ellipsis-specified?
-              (memq ellipsis lits)
-              (any (lambda (x) (compare ellipsis x)) lits))
-          (lambda (x) #f)
-          (if ellipsis-specified?
-              (lambda (x) (eq? ellipsis x))
-              (lambda (x) (compare ellipsis x)))))
+      (let ((cmp (if ellipsis-specified? eq? compare)))
+        (if (any (lambda (x) (cmp ellipsis x)) lits)
+            (lambda (x) #f)
+            (lambda (x) (cmp ellipsis x)))))
     (define (ellipsis-escape? x) (and (pair? x) (ellipsis-mark? (car x))))
     (define (ellipsis? x)
       (and (pair? x) (pair? (cdr x)) (ellipsis-mark? (cadr x))))
@@ -277,7 +274,10 @@
                   (if (null? (ellipsis-tail t))
                       many ;; shortcut
                       (list _append many (lp (ellipsis-tail t) dim ell-escaped))))))))
-           (else (list _cons3 (lp (car t) dim ell-escaped) (lp (cdr t) dim ell-escaped) (list _quote t)))))
+           (else (list _cons3
+                       (lp (car t) dim ell-escaped)
+                       (lp (cdr t) dim ell-escaped)
+                       (list _quote t)))))
          ((vector? t) (list _list->vector (lp (vector->list t) dim ell-escaped)))
          ((null? t) (list _quote '()))
          (else t))))
