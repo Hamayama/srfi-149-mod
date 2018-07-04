@@ -108,9 +108,9 @@ macroexpand-all で展開してみます。
 - OS
   - Windows 8.1 (64bit)
 - 環境
-  - MSYS2/MinGW-w64 (64bit/32bit) (gcc version 7.2.0 (Rev1, Built by MSYS2 project))
+  - MSYS2/MinGW-w64 (64bit/32bit) (gcc version 7.3.0 (Rev2, Built by MSYS2 project))
 - 言語
-  - Gauche v0.9.6_pre7
+  - Gauche v0.9.6
 - ライセンス
   - オリジナルと同様とします
 
@@ -134,6 +134,8 @@ macroexpand-all で展開してみます。
 - 2018-7-2    v1.10 ellipsis をエスケープした template 内で、pattern 変数が展開されない件を修正
 - 2018-7-2    v1.11 プログラムを整理
 - 2018-7-3    v1.12 expand-template の元の処理を壊さないように修正
+- 2018-7-5    v1.13 v1.11 の変更を元に戻した(遅くなるため)  
+                  また expand-template の処理を修正((... x y) という拡張書式を許可)
 
 
-(2018-7-3)
+(2018-7-5)

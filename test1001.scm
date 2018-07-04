@@ -68,7 +68,7 @@
         (interaction-environment)))
 
 ;; ----------------------------------------
-(test-section "ellipsis escape (fixed in v1.10)")
+(test-section "ellipsis escape (fixed in v1.10-1.13)")
 
 (define-syntax elli-esc-1
   (syntax-rules ()
@@ -82,6 +82,19 @@
 (test* "ellipsis-escape-1" '... (elli-esc-1))
 (test* "ellipsis-escape-2" '(100 ...) (elli-esc-1 100))
 (test* "ellipsis-escape-3" '(... 100 200) (elli-esc-1 100 200))
+
+(define-syntax elli-esc-2
+  (syntax-rules ()
+    ((_)
+     '(...))
+    ((_ x)
+     '(... x))
+    ((_ x y)
+     '(... x y))))
+
+(test* "ellipsis-escape-4" '() (elli-esc-2))
+(test* "ellipsis-escape-5" 100 (elli-esc-2 100))
+(test* "ellipsis-escape-6" '(100 200) (elli-esc-2 100 200))
 
 (test-end)
 
