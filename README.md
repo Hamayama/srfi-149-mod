@@ -41,8 +41,8 @@
    https://gist.github.com/Hamayama/6666e5d2c8d5167d22f7
 
 2. 本サイトのソースのダウンロード  
-   本サイト( https://github.com/Hamayama/srfi-149-mod )のファイルを、  
-   (Download Zip ボタン等で)ダウンロードして、適当なフォルダに展開してください。
+   本サイト ( https://github.com/Hamayama/srfi-149-mod ) のファイルを、  
+   (Download Zip ボタン等で) ダウンロードして、適当なフォルダに展開してください。
 
 3. Gauche の改造  
    compile-1_add.scm の内容を、  
@@ -138,4 +138,4 @@ macroexpand-all で展開してみます。
                   また expand-template の処理を修正((... x y) という拡張書式を許可)
 
 
-(2018-7-6)
+(2018-7-8)
